@@ -39,3 +39,4 @@ describe("User sorts products", () => {
     expect(firstName < lastName).to.be.true;
   });
 });
+// Main page object for search and sort functionality
