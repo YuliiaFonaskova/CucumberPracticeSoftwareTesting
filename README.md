@@ -4,13 +4,13 @@ UI automation framework created with WebdriverIO for the Practice Software Testi
 
 ## Tech Stack
 
-* JavaScript (ES6)
-* WebdriverIO
-* Mocha
-* Chai
-* Page Object Model (POM)
-* Node.js
-* npm
+- JavaScript (ES6)
+- WebdriverIO
+- Mocha
+- Chai
+- Page Object Model (POM)
+- Node.js
+- npm
 
 ## Project Structure
 
@@ -33,22 +33,22 @@ UI automation framework created with WebdriverIO for the Practice Software Testi
 
 ### Authentication
 
-* User signs in successfully
-* User signs in unsuccessfully
+- User signs in successfully
+- User signs in unsuccessfully
 
 ### Registration
 
-* User signs up successfully
-* User signs up unsuccessfully
+- User signs up successfully
+- User signs up unsuccessfully
 
 ### Product Functionality
 
-* User searches for an exact product
-* User sorts products
-* User views product details
-* User adds a product to favourites
-* User adds a product to the shopping cart
-* User sees updated cart counter
+- User searches for an exact product
+- User sorts products
+- User views product details
+- User adds a product to favourites
+- User adds a product to the shopping cart
+- User sees updated cart counter
 
 ## Design Pattern
 
