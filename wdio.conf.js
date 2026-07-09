@@ -53,10 +53,7 @@ exports.config = {
     {
       browserName: "chrome",
       "goog:chromeOptions": {
-        args: [
-          "--disable-save-password-bubble",
-          "--disable-features=PasswordManagerOnboarding",
-        ],
+        args: ["--disable-save-password-bubble", "--disable-features=PasswordManagerOnboarding"],
         prefs: {
           credentials_enable_service: false,
           "profile.password_manager_enabled": false,

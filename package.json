@@ -7,7 +7,9 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier . --check",
+    "format:fix": "prettier . --write"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +25,7 @@
     "chai": "^6.2.2",
     "eslint": "^9.39.4",
     "globals": "^17.6.0",
+    "prettier": "^3.9.4",
     "wdio-html-nice-reporter": "^8.1.7"
   }
 }
