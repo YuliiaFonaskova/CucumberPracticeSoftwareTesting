@@ -3,11 +3,11 @@ name: WDIO CI
 on:
   push:
     branches:
-      - main
+      - master
       - feature/**
   pull_request:
     branches:
-      - main
+      - master
 jobs:
   linters:
     runs-on: ubuntu-latest
