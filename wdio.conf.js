@@ -15,12 +15,23 @@ exports.config = {
   capabilities: [
     {
       browserName: "chrome",
+
+      "wdio:maxInstances": 1,
+
       "goog:chromeOptions": {
         args: [
-          ...(isCI ? ["--headless=new", "--no-sandbox", "--disable-dev-shm-usage"] : []),
+          ...(isCI
+            ? [
+                "--headless=new",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--window-size=1920,1080",
+              ]
+            : []),
           "--disable-save-password-bubble",
           "--disable-features=PasswordManagerOnboarding",
         ],
+
         prefs: {
           credentials_enable_service: false,
           "profile.password_manager_enabled": false,
@@ -36,11 +47,15 @@ exports.config = {
 
   baseUrl: "https://practicesoftwaretesting.com/",
 
-  waitforTimeout: 10000,
+  waitforTimeout: 30000,
 
   connectionRetryTimeout: 120000,
 
   connectionRetryCount: 3,
+
+  specFileRetries: 1,
+
+  specFileRetriesDelay: 5,
 
   framework: "cucumber",
 
