@@ -1,8 +1,7 @@
-class LoginPage {
-  get loginButton() {
-    return $('[data-test="nav-sign-in"]');
-  }
+const BasePage = require("./base.page");
+const routes = require("../config/routes");
 
+class LoginPage extends BasePage {
   get emailField() {
     return $('[data-test="email"]');
   }
@@ -11,7 +10,7 @@ class LoginPage {
     return $('[data-test="password"]');
   }
 
-  get btnSubmit() {
+  get submitButton() {
     return $('[data-test="login-submit"]');
   }
 
@@ -19,42 +18,35 @@ class LoginPage {
     return $('[data-test="login-error"]');
   }
 
-  async openUrl() {
-    await browser.url("/");
-  }
-
-  async loginSuccess() {
-    await this.openUrl();
-    await this.loginButton.waitForDisplayed();
-    await this.loginButton.waitForClickable();
-    await this.loginButton.click();
+  async openLoginPage() {
+    await this.open(routes.login);
     await this.emailField.waitForDisplayed();
-    await this.emailField.setValue("customer@practicesoftwaretesting.com");
-    await this.passwordField.setValue("welcome01");
-    await this.btnSubmit.click();
-    await browser.pause(2000);
   }
 
-  async loginFail() {
-    await this.openUrl();
-    await this.loginButton.waitForDisplayed();
-    await this.loginButton.waitForClickable();
-    await this.loginButton.click();
-    await this.emailField.waitForDisplayed();
-    await this.emailField.setValue("fail@practicesoftwaretesting.com");
-    await this.passwordField.setValue("fail0123");
-    await this.btnSubmit.click();
-    await browser.pause(2000);
+  async login(email, password) {
+    await this.emailField.setValue(email);
+    await this.passwordField.setValue(password);
+
+    await this.submitButton.waitForClickable();
+    await this.submitButton.click();
   }
 
-  async cleanSession() {
-    await browser.reloadSession();
-    await browser.url("/");
-    await browser.execute(() => {
-      localStorage.clear();
-      sessionStorage.clear();
-    });
-    await browser.deleteCookies();
+  async waitForSuccessfulLogin() {
+    await browser.waitUntil(
+      async () => {
+        const currentUrl = await browser.getUrl();
+        return currentUrl.includes(routes.account);
+      },
+      {
+        timeout: 20000,
+        timeoutMsg: "The user was not logged in successfully",
+      }
+    );
+  }
+
+  async getErrorMessage() {
+    await this.errorMessage.waitForDisplayed();
+    return this.errorMessage.getText();
   }
 }
 

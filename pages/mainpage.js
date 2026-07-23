@@ -1,6 +1,7 @@
-const LoginPage = require("./loginpage");
+const BasePage = require("./base.page");
+const routes = require("../config/routes");
 
-class MainPage {
+class MainPage extends BasePage {
   get searchField() {
     return $('[data-test="search-query"]');
   }
@@ -9,26 +10,32 @@ class MainPage {
     return $('[data-test="search-submit"]');
   }
 
-  get sortDropdown() {
-    return $('[data-test="sort"]');
-  }
+
 
   get productNames() {
     return $$('[data-test="product-name"]');
   }
 
+  
+
+  async openHomePage() {
+    await this.open(routes.home);
+  }
+
   async searchProduct(productName) {
-    await LoginPage.openUrl();
-    await this.searchField.waitForDisplayed({ timeout: 10000 });
+    await this.searchField.waitForDisplayed();
     await this.searchField.setValue(productName);
     await this.searchButton.click();
   }
 
-  async sortProducts(sortOption) {
-    await LoginPage.openUrl();
-    await this.sortDropdown.waitForDisplayed({ timeout: 10000 });
-    await this.sortDropdown.selectByVisibleText(sortOption);
+  
+  async getFirstProductName() {
+    const products = await this.productNames;
+
+    return products[0].getText();
   }
+
+  
 }
 
 module.exports = new MainPage();

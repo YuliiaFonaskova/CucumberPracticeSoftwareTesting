@@ -1,5 +1,7 @@
-const LoginPage = require("./loginpage");
-class ProductPage {
+const BasePage = require("./base.page");
+const routes = require("../config/routes");
+
+class ProductPage extends BasePage {
   get productTitle() {
     return $('[data-test="product-name"]');
   }
@@ -20,36 +22,106 @@ class ProductPage {
     return $('[role="alert"]');
   }
 
-  get addButton() {
+  get addToCartButton() {
     return $('[data-test="add-to-cart"]');
-  }
-
-  get toastMessage() {
-    return $(".toast-success");
   }
 
   get cartQuantity() {
     return $('[data-test="cart-quantity"]');
   }
 
-  async openProduct() {
-    await LoginPage.openUrl();
-    await this.productTitle.waitForDisplayed({ timeout: 10000 });
-    await this.productTitle.click();
+  async openFirstProduct() {
+    await this.open(routes.home);
+
+    await browser.waitUntil(
+      async () => {
+        const products = await browser.$$('[data-test="product-name"]');
+        return products.length > 0;
+      },
+      {
+        timeout: 20000,
+        timeoutMsg: "Products were not displayed on the home page",
+      },
+    );
+
+    const products = await browser.$$('[data-test="product-name"]');
+
+    await products[0].waitForClickable({
+      timeout: 10000,
+    });
+
+    await products[0].click();
+
+    await browser.waitUntil(
+      async () => {
+        const currentUrl = await browser.getUrl();
+        return currentUrl.includes(routes.product);
+      },
+      {
+        timeout: 10000,
+        timeoutMsg: "Product page was not opened",
+      },
+    );
+
+    await this.productTitle.waitForDisplayed({
+      timeout: 10000,
+    });
   }
 
   async addFavourite() {
-    await this.productTitle.waitForDisplayed({ timeout: 10000 });
-    await this.productTitle.click();
-    await this.favouriteButton.waitForDisplayed({ timeout: 5000 });
+    await this.favouriteButton.waitForClickable({
+      timeout: 10000,
+    });
+
     await this.favouriteButton.click();
   }
 
   async addToCart() {
-    await this.productTitle.waitForDisplayed({ timeout: 10000 });
-    await this.productTitle.click();
-    await this.addButton.waitForDisplayed({ timeout: 5000 });
-    await this.addButton.click();
+    await this.addToCartButton.waitForClickable({
+      timeout: 10000,
+    });
+
+    await this.addToCartButton.click();
+  }
+
+  async getConfirmationMessageText() {
+    await this.confirmationMessage.waitForDisplayed({
+      timeout: 10000,
+    });
+
+    return this.confirmationMessage.getText();
+  }
+
+  async getProductTitle() {
+    await this.productTitle.waitForDisplayed({
+      timeout: 10000,
+    });
+
+    return this.productTitle.getText();
+  }
+
+  async getProductPrice() {
+    await this.productPrice.waitForDisplayed({
+      timeout: 10000,
+    });
+
+    return this.productPrice.getText();
+  }
+
+  async getProductDescription() {
+    await this.productDescription.waitForDisplayed({
+      timeout: 10000,
+    });
+
+    return this.productDescription.getText();
+  }
+
+  async getCartQuantity() {
+    await this.cartQuantity.waitForDisplayed({
+      timeout: 15000,
+    });
+
+    return this.cartQuantity.getText();
   }
 }
 

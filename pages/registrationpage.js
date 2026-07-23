@@ -1,9 +1,7 @@
-const LoginPage = require("./loginpage");
-class RegistrationPage {
-  get registerLink() {
-    return $('[data-test="register-link"]');
-  }
+const BasePage = require("./base.page");
+const routes = require("../config/routes");
 
+class RegistrationPage extends BasePage {
   get firstNameField() {
     return $('[data-test="first-name"]');
   }
@@ -28,8 +26,8 @@ class RegistrationPage {
     return $('[data-test="house_number"]');
   }
 
-  get polandOption() {
-    return $('//*[contains(text(), "Poland")]');
+  get streetField() {
+    return $('[data-test="street"]');
   }
 
   get phoneField() {
@@ -56,49 +54,63 @@ class RegistrationPage {
     return $('[data-test="country-error"]');
   }
 
-  async registerSuccess() {
-    await LoginPage.openUrl();
-    await LoginPage.loginButton.waitForDisplayed();
-    await LoginPage.loginButton.waitForClickable();
-    await LoginPage.loginButton.click();
-
-    await this.registerLink.click();
-    await this.firstNameField.setValue("User");
-    await this.lastNameField.setValue("User");
-    await browser.pause(2000);
-    await this.dateField.setValue("2000-01-01");
-    await this.countryField.click();
-    await this.polandOption.scrollIntoView();
-    await this.polandOption.click();
-
-    await this.postalCodeField.setValue("30-704");
-    await this.houseField.setValue("24");
-    await browser.pause(2000);
-    await this.phoneField.setValue("123456789");
-
-    const timestamp = Date.now();
-    const email = `user${timestamp}@test.com`;
-    const password = `Reg!${timestamp}`;
-
-    await this.emailField.setValue(email);
-    await this.passwordField.setValue(password);
-
-    await this.registerButton.click();
-    await browser.pause(2000);
+  async openRegistrationPage() {
+    await this.open(routes.register);
+    await this.firstNameField.waitForDisplayed();
   }
 
-  async registerFail() {
-    await LoginPage.openUrl();
-    await LoginPage.loginButton.waitForDisplayed();
-    await LoginPage.loginButton.waitForClickable();
-    await LoginPage.loginButton.click();
+  async fillRequiredNameFields(firstName, lastName) {
+    await this.firstNameField.setValue(firstName);
+    await this.lastNameField.setValue(lastName);
+  }
 
-    await this.registerLink.click();
-    await this.firstNameField.setValue("User");
-    await this.lastNameField.setValue("User");
+  async selectCountry(country) {
+    await this.countryField.waitForDisplayed();
+    await this.countryField.selectByVisibleText(country);
+  }
+
+  async submitRegistration() {
+    await this.registerButton.scrollIntoView({
+      block: "center",
+    });
+
+    await this.registerButton.waitForClickable({
+      timeout: 10000,
+    });
 
     await this.registerButton.click();
-    await browser.pause(2000);
+  }
+
+  async registerSuccess(user) {
+    await this.fillRequiredNameFields(user.firstName, user.lastName);
+
+    await this.dateField.setValue(user.dateOfBirth);
+    await this.selectCountry(user.country);
+    await this.postalCodeField.setValue(user.postalCode);
+    await this.houseField.setValue(user.houseNumber);
+
+    await browser.waitUntil(
+      async () => {
+        const street = await this.streetField.getValue();
+        return street.length > 0;
+      },
+      {
+        timeout: 10000,
+        timeoutMsg: "The address was not filled automatically",
+      }
+    );
+
+    await this.phoneField.setValue(user.phone);
+    await this.emailField.setValue(user.email);
+    await this.passwordField.setValue(user.password);
+
+    await this.submitRegistration();
+  }
+
+  async registerFail(user) {
+    await this.fillRequiredNameFields(user.firstName, user.lastName);
+    await this.submitRegistration();
   }
 }
+
 module.exports = new RegistrationPage();
