@@ -1,4 +1,4 @@
-const BasePage = require("./base.page");
+const BasePage = require("./basepage");
 const routes = require("../config/routes");
 
 class MainPage extends BasePage {
@@ -62,7 +62,7 @@ class MainPage extends BasePage {
       async () => {
         const currentUrl = await browser.getUrl();
 
-        return currentUrl.includes("/account/favorites");
+        return currentUrl.includes(routes.favorites);
       },
       {
         timeoutMsg: "Favorites page was not opened",

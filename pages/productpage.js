@@ -1,4 +1,4 @@
-const BasePage = require("./base.page");
+const BasePage = require("./basepage");
 const routes = require("../config/routes");
 
 class ProductPage extends BasePage {

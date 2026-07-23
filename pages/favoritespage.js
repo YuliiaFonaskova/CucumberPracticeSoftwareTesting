@@ -1,4 +1,4 @@
-const BasePage = require("./base.page");
+const BasePage = require("./basepage");
 
 class FavoritesPage extends BasePage {
   get favoriteProductTitles() {
