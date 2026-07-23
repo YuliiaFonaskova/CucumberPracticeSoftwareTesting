@@ -13,3 +13,9 @@ Then("a cart confirmation message should be displayed", async () => {
 
   expect(message).to.not.be.empty;
 });
+
+Then("the cart counter should display 1", async () => {
+  const cartQuantity = await ProductPage.getCartQuantity();
+
+  expect(cartQuantity).to.equal("1");
+});

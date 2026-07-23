@@ -1,7 +1,10 @@
-const BasePage = require("./base.page");
-const routes = require("../config/routes");
+const LoginPage = require("./loginpage");
 
-class RegistrationPage extends BasePage {
+class RegistrationPage {
+  get registerLink() {
+    return $('[data-test="register-link"]');
+  }
+
   get firstNameField() {
     return $('[data-test="first-name"]');
   }
@@ -55,7 +58,11 @@ class RegistrationPage extends BasePage {
   }
 
   async openRegistrationPage() {
-    await this.open(routes.register);
+    await LoginPage.openLoginPage();
+
+    await this.registerLink.waitForClickable();
+    await this.registerLink.click();
+
     await this.firstNameField.waitForDisplayed();
   }
 
@@ -77,6 +84,10 @@ class RegistrationPage extends BasePage {
     await this.registerButton.waitForClickable({
       timeout: 10000,
     });
+
+    console.log("REGISTER BUTTON DISPLAYED:", await this.registerButton.isDisplayed());
+    console.log("REGISTER BUTTON ENABLED:", await this.registerButton.isEnabled());
+    console.log("REGISTER BUTTON CLICKABLE:", await this.registerButton.isClickable());
 
     await this.registerButton.click();
   }

@@ -1,31 +1,39 @@
-# WebdriverIO Practice Software Testing
+# WebdriverIO Cucumber Test Automation Framework
 
-UI automation framework created with WebdriverIO for the Practice Software Testing application.
+This project is a UI test automation framework for the Practice Software Testing application.
 
 ## Tech Stack
 
-- JavaScript (ES6)
+- JavaScript
 - WebdriverIO
-- Mocha
+- Cucumber
+- Gherkin
 - Chai
 - Page Object Model (POM)
-- Node.js
-- npm
+- ESLint
+- Prettier
+- HTML Reporter
+- Spec Reporter
+- GitHub Actions
 
 ## Project Structure
 
-```text
+```
+.
+├── config
+├── features
+│   ├── step-definitions
+│   ├── support
+│   ├── authentication.feature
+│   ├── products.feature
+│   ├── registration.feature
+│   └── shopping-cart.feature
 ├── pages
-│   ├── loginpage.js
-│   ├── mainpage.js
-│   ├── productpage.js
-│   └── registrationpage.js
-├── test
-│   ├── loginpage.test.js
-│   ├── mainpage.test.js
-│   ├── productpage.test.js
-│   └── registrationpage.test.js
+├── test-data
+├── reports
+├── .env.example
 ├── package.json
+├── wdio.conf.js
 └── README.md
 ```
 
@@ -33,48 +41,91 @@ UI automation framework created with WebdriverIO for the Practice Software Testi
 
 ### Authentication
 
-- User signs in successfully
-- User signs in unsuccessfully
+- Successful login with valid credentials
+- Unsuccessful login with invalid credentials
 
 ### Registration
 
-- User signs up successfully
-- User signs up unsuccessfully
+- Successful registration
+- Registration validation for required fields
 
-### Product Functionality
+### Products
 
-- User searches for an exact product
-- User sorts products
-- User views product details
-- User adds a product to favourites
-- User adds a product to the shopping cart
-- User sees updated cart counter
+- Search for an existing product
+- View product details
+- Add a product to favourites
 
-## Design Pattern
+### Shopping Cart
 
-This project follows the **Page Object Model (POM)** design pattern to improve test maintainability and reusability.
+- Add a product to the shopping cart
+- Verify the confirmation message
+- Verify the cart quantity
 
-## Installation
+## Running Tests
+
+Install dependencies:
 
 ```bash
 npm install
 ```
 
-## Run Tests
+Run all tests:
 
 ```bash
 npm test
 ```
 
-or
+Run tests by tags:
 
 ```bash
-npx wdio run wdio.conf.js
+npm run test:smoke
+npm run test:regression
+npm run test:login
+npm run test:registration
+npm run test:product
+npm run test:cart
 ```
+
+## Code Quality
+
+Check formatting:
+
+```bash
+npm run format
+```
+
+Fix formatting:
+
+```bash
+npm run format:fix
+```
+
+Run ESLint:
+
+```bash
+npm run lint
+```
+
+## Reports
+
+The framework generates:
+
+- Spec Reporter output in the console
+- HTML report in the `reports/html-reports` folder
+
+## CI
+
+The project uses GitHub Actions to:
+
+- run ESLint;
+- check formatting;
+- execute UI tests;
+- publish HTML reports as artifacts.
 
 ## Author
 
-Yuliia Fonaskova
+**Yuliia Fonaskova**
 
 GitHub: https://github.com/YuliiaFonaskova
+
 LinkedIn: https://www.linkedin.com/in/yuliia-fonaskova/
