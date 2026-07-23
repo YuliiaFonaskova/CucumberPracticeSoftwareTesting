@@ -13,9 +13,7 @@ class BasePage {
 
     fs.ensureDirSync("./reports/screenshots");
 
-    await browser.saveScreenshot(
-      `./reports/screenshots/${Date.now()}-page.png`,
-    );
+    await browser.saveScreenshot(`./reports/screenshots/${Date.now()}-page.png`);
   }
 }
 
