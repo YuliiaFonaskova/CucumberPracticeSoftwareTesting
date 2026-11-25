@@ -8,6 +8,9 @@ const isCI = Boolean(process.env.CI);
 exports.config = {
   runner: "local",
 
+  // Headless Chrome in CI does not need Xvfb, and xvfb-run breaks Node IPC on Linux runners.
+  autoXvfb: false,
+
   specs: ["./features/**/*.feature"],
 
   maxInstances: 1,
